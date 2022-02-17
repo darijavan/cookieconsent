@@ -151,6 +151,7 @@
             /** @type {HTMLElement} */ consent_modal_description,
             /** @type {HTMLElement} */ consent_primary_btn,
             /** @type {HTMLElement} */ consent_secondary_btn,
+            /** @type {HTMLElement} */ consent_third_btn,
             /** @type {HTMLElement} */ consent_buttons,
             /** @type {HTMLElement} */ consent_modal_inner,
 
@@ -453,7 +454,8 @@
             consent_modal_description.innerHTML = description;
 
             var primary_btn_data = user_config.languages[lang]['consent_modal']['primary_btn'],   // accept current selection
-                secondary_btn_data = user_config.languages[lang]['consent_modal']['secondary_btn'];
+                secondary_btn_data = user_config.languages[lang]['consent_modal']['secondary_btn'],
+                third_btn_data = user_config.languages[lang]['consent_modal']['third_btn'];
 
             // Add primary button if not falsy
             if(primary_btn_data){
@@ -501,6 +503,27 @@
                 consent_secondary_btn.innerHTML = user_config.languages[lang]['consent_modal']['secondary_btn']['text'];
             }
 
+            if (third_btn_data){
+                if (!consent_third_btn){
+                    consent_third_btn = _createNode('button');
+                    consent_third_btn.id = 'c-t-bn';
+                    consent_third_btn.className = "c-bn c_link";
+
+                    if (third_btn_data['role'] === 'accept_necessary'){
+                        _addEvent(consent_third_btn, 'click', function(){
+                            _cookieconsent.hide();
+                            _cookieconsent.accept([]); // accept necessary only
+                        });
+                    }else{
+                        _addEvent(consent_third_btn, 'click', function(){
+                            _cookieconsent.showSettings(0);
+                        });
+                    }
+                }
+
+                consent_third_btn.innerHTML = user_config.languages[lang]['consent_modal']['third_btn']['text'];
+            }
+
             // Swap buttons
             var gui_options_data = user_config['gui_options'];
 
@@ -516,12 +539,14 @@
                 consent_buttons.id = "c-bns";
 
                 if(gui_options_data && gui_options_data['consent_modal'] && gui_options_data['consent_modal']['swap_buttons'] === true){
+                    third_btn_data && consent_buttons.appendChild(consent_third_btn);
                     secondary_btn_data && consent_buttons.appendChild(consent_secondary_btn);
                     primary_btn_data && consent_buttons.appendChild(consent_primary_btn);
                     consent_buttons.className = 'swap';
                 }else{
                     primary_btn_data && consent_buttons.appendChild(consent_primary_btn);
                     secondary_btn_data && consent_buttons.appendChild(consent_secondary_btn);
+                    third_btn_data && consent_buttons.appendChild(consent_third_btn);
                 }
 
                 (primary_btn_data || secondary_btn_data ) && consent_modal_inner.appendChild(consent_buttons);
