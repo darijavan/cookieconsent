@@ -247,10 +247,8 @@
 }
 
 .cc_div #c-bns{
-    display: grid;
-    grid-auto-flow: column;
-    grid-column-gap: .5rem;
-    grid-auto-columns: minmax(0, 1fr);
+    display: flex;
+    justify-content: space-between;
     margin-top: 1.4em;
 }
 
@@ -271,6 +269,13 @@
     text-align: center;
     border-radius: 4px;
     flex: 1;
+}
+
+#c-bns button + button,
+#s-cnt button + button,
+#s-c-bn{
+    float: right;
+    margin-left: 1em;
 }
 
 #s-cnt #s-rall-bn{
@@ -986,6 +991,7 @@ html.force--consent.show--consent body{
 }
 
 #cm.cloud .c-bn{
+    margin: .625em 0 0 0;
     width: 100%;
 }
 
